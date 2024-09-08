@@ -1,0 +1,20 @@
+# Використаємо базовий образ Ubuntu
+FROM ubuntu:latest
+
+# Оновлюємо пакети та встановлюємо gcc
+RUN apt-get update && apt-get install -y gcc
+
+# Додатково можемо встановити gdb для налагодження
+RUN apt-get install -y gdb
+
+# Копіюємо ваш код у контейнер
+COPY hello.c /app/hello.c
+
+# Встановлюємо робочу директорію
+WORKDIR /app
+
+# Компілюємо програму з використанням опцій, які ви надали
+RUN gcc -Wall -Wextra -O2 -g -fsanitize=address -o hello hello.c
+
+# Вказуємо, що контейнер має виконувати програму
+CMD ["./hello"]
