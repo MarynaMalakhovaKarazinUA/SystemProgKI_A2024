@@ -1,0 +1,41 @@
+# Використаємо базовий образ Ubuntu
+FROM ubuntu:latest
+
+# Оновлюємо пакети та встановлюємо gcc
+RUN apt-get update && apt-get install -y gcc git
+
+#RUN git config --global user.name "Ivan Potapenko" && \
+#    git config --global user.email "ivan.potapenko@student.karazin.ua"
+
+
+# Встановлюємо Python 3.6 і необхідні утиліти
+RUN apt-get update && apt-get install -y \
+    software-properties-common && \
+    add-apt-repository ppa:deadsnakes/ppa && \
+    apt-get update && \
+    apt-get install -y python3.6 python3-pip
+
+# Додатково можемо встановити gdb для налагодження
+RUN apt-get install -y gdb
+
+# Копіюємо ваш код у контейнер
+#COPY hello.c /app/hello.c
+
+COPY hello.py /app/hello.py
+
+COPY drawing.sh /app/drawing.sh
+
+RUN chmod +x /app/drawing.sh
+
+RUN chmod +x /app/hello.py
+
+# Встановлюємо робочу директорію
+WORKDIR /app
+
+# Компілюємо програму з використанням опцій, які ви надали
+#RUN gcc -Wall -Wextra -O2 -g -fsanitize=address -o hello hello.c
+
+RUN git config --list
+
+# Вказуємо, що контейнер має виконувати програму
+CMD ["/app/drawing.sh"]
