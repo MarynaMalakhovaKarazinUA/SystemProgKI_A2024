@@ -1,0 +1,12 @@
+# Використовуємо базовий образ Python
+FROM python:3.9-slim
+
+# Копіюємо скрипти в робочу директорію
+WORKDIR /app
+COPY delete_contents.py /app/
+
+# Створюємо тимчасовий каталог всередині контейнера
+RUN mkdir -p /app/tmp
+
+# Запуск програми для рекурсивного видалення
+CMD ["python", "delete_contents.py"]
