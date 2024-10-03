@@ -1,0 +1,17 @@
+# Використання офіційного образу Ubuntu
+FROM ubuntu:latest
+
+# Оновлення та встановлення gcc
+RUN apt-get update && apt-get install -y gcc
+
+# Створюємо робочу директорію
+WORKDIR /usr/src/app
+
+# Копіюємо файл з програмою всередину контейнера
+COPY helloworld.c .
+
+# Компілюємо програму всередині контейнера
+RUN gcc -Wall -Wextra -O2 -g -fsanitize=address -o helloworld helloworld.c
+
+# Вказуємо команду для виконання програми після запуску контейнера
+CMD ["./helloworld"]

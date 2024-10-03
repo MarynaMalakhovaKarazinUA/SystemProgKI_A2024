@@ -1,0 +1,16 @@
+# Вказуємо базовий образ Ubuntu 18.04
+FROM ubuntu:18.04
+
+# Оновлюємо систему і встановлюємо необхідні пакети
+RUN apt-get update && apt-get install -y \
+    python3.6 \
+    python3-pip
+
+# Створюємо робочу директорію для контейнера
+WORKDIR /usr/src/app
+
+# Копіюємо скрипт у контейнер
+COPY script.py .
+
+# Вказуємо команду для виконання Python-скрипта
+CMD ["python3.6", "script.py"]
