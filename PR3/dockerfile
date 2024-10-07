@@ -1,11 +1,6 @@
-# Використовуємо базовий образ Python
-FROM python:3.9-slim
-
-# Вказуємо робочу директорію в контейнері
+FROM gcc:latest
+COPY check_file.c /app/check_file.c
+COPY testfile.txt /app/testfile.txt
 WORKDIR /app
-
-# Копіюємо файли програми в контейнер
-COPY . .
-
-# Вказуємо команду для запуску програми
-CMD ["python", "task.py"]
+RUN gcc -o check_file check_file.c
+CMD ["./check_file", "/app/testfile.txt"]
