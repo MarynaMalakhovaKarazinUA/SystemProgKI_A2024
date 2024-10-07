@@ -1,12 +1,23 @@
-# Використовуємо базовий образ Python
-FROM python:3.9-slim
+# Use an Alpine image with build tools (like GCC and make)
+FROM alpine:latest
 
-# Копіюємо скрипти в робочу директорію
+# Install build dependencies (GCC, libc-dev, make) and clean up after installation
+RUN apk add --no-cache gcc libc-dev make
+
+# Set the working directory inside the container
 WORKDIR /app
-COPY delete_contents.py /app/
 
-# Створюємо тимчасовий каталог всередині контейнера
-RUN mkdir -p /app/tmp
+# Copy the source code into the container
+COPY delete_dir.c .
 
-# Запуск програми для рекурсивного видалення
-CMD ["python", "delete_contents.py"]
+# Compile the C program
+RUN gcc -o delete_dir delete_dir.c
+
+# Create a test directory with some files and subdirectories
+RUN mkdir -p testdir/subdir1 testdir/subdir2 && \
+    echo "This is a test file in subdir1" > testdir/subdir1/testfile1.txt && \
+    echo "This is another test file in subdir2" > testdir/subdir2/testfile2.txt && \
+    echo "This is a root test file" > testdir/rootfile.txt
+
+# Command to run the program (deletes the contents of 'testdir')
+CMD ["sh", "-c", "./delete_dir /app/testdir && sh"]
