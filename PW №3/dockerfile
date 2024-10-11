@@ -1,0 +1,14 @@
+# Використовуємо базовий образ Python
+FROM python:3.9-slim
+
+# Встановлюємо необхідні пакети
+RUN pip install watchdog
+
+# Створюємо робочу директорію
+WORKDIR /app
+
+# Копіюємо файли програми в контейнер
+COPY backup_daemon.py /app/backup_daemon.py
+
+# Вказуємо команду для запуску програми
+CMD ["python", "backup_daemon.py"]
