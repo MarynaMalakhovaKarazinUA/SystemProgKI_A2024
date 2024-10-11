@@ -38,4 +38,4 @@ WORKDIR /app
 RUN git config --list
 
 # Вказуємо, що контейнер має виконувати програму
-CMD ["/app/drawing.sh"]
+CMD ["/bin/bash"]
