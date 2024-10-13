@@ -1,0 +1,25 @@
+# Використовуємо конкретну версію Ubuntu для стабільності
+FROM ubuntu:latest
+
+# Встановлюємо змінну середовища для уникнення інтерактивних запитів під час установки
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Оновлюємо пакети та встановлюємо необхідні утиліти
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        build-essential \
+        binutils \
+        vim \
+    && rm -rf /var/lib/apt/lists/*
+
+# Встановлюємо робочу директорію
+WORKDIR /tmp
+
+# Копіюємо вихідні файли
+COPY . /app
+
+# Компіляція програми
+RUN gcc -pg -o /tmp/main /app/main.c
+
+# Вказуємо команду за замовчуванням
+CMD ["/bin/bash"]
