@@ -1,0 +1,22 @@
+FROM ubuntu:latest
+
+# Встановлюємо необхідні пакети
+RUN apt-get update && apt-get install -y \
+    gcc \
+    make \
+    binutils
+
+# Встановлюємо робочу директорію
+WORKDIR /app
+
+# Копіюємо код у контейнер
+COPY . /app
+
+# Перевіряємо наявність файлів
+RUN ls -la /app
+
+# Компілюємо код з опціями профайлінгу
+RUN gcc -pg -o myapp myapp.c
+
+# Команда за замовчуванням для запуску
+CMD ["./myapp"]
