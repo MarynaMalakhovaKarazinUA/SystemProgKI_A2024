@@ -8,13 +8,14 @@
 #include <dirent.h>
 #include <time.h>
 #include <errno.h>
+#include <syslog.h>  // Добавлено для работы с syslog
 
 #define SOURCE_DIR "/path/to/source_folder"
 #define BACKUP_DIR "/path/to/backup_folder"
 #define MAX_BACKUPS 5
 #define LOG_FILE "/var/log/backup_daemon.log"
 
-// Функція для демонстрації демонізації процесу
+// Функция для демонстрации демонизации процесса
 void daemonize() {
     pid_t pid = fork();
 
@@ -50,10 +51,10 @@ void daemonize() {
         close(x);
     }
 
-    openlog("backup_daemon", LOG_PID, LOG_DAEMON);
+    openlog("backup_daemon", LOG_PID, LOG_DAEMON);  // Работа с системным журналом
 }
 
-// Функція для запису журналу подій
+// Функция для записи событий в журнал
 void log_event(const char *message) {
     FILE *log_file = fopen(LOG_FILE, "a");
     if (log_file == NULL) {
@@ -62,13 +63,13 @@ void log_event(const char *message) {
 
     time_t now = time(NULL);
     char *time_str = ctime(&now);
-    time_str[strlen(time_str) - 1] = '\0'; // Видаляємо новий рядок
+    time_str[strlen(time_str) - 1] = '\0'; // Удаляем символ новой строки
 
     fprintf(log_file, "[%s] %s\n", time_str, message);
     fclose(log_file);
 }
 
-// Функція для створення резервної копії файлу
+// Функция для создания резервной копии файла
 void create_backup(const char *file_path) {
     char backup_path[1024];
     snprintf(backup_path, sizeof(backup_path), "%s/%s", BACKUP_DIR, file_path + strlen(SOURCE_DIR) + 1);
@@ -94,7 +95,7 @@ void create_backup(const char *file_path) {
     log_event("Backup created");
 }
 
-// Функція для управління резервними копіями
+// Функция для управления резервными копиями
 void manage_backups() {
     DIR *dir = opendir(BACKUP_DIR);
     if (dir == NULL) {
@@ -111,12 +112,12 @@ void manage_backups() {
     closedir(dir);
 
     if (backup_count > MAX_BACKUPS) {
-        // Видаляємо найстаріші резервні копії
-        // (Цей код можна розширити для видалення найстаріших файлів)
+        // Удаление старейших резервных копий
+        // (Этот код можно расширить для удаления старейших файлов)
     }
 }
 
-// Функція для моніторингу папки
+// Функция для мониторинга папки
 void monitor_folder() {
     while (1) {
         DIR *dir = opendir(SOURCE_DIR);
