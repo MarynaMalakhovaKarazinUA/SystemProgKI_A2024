@@ -1,0 +1,17 @@
+# Використовуємо базовий образ з компілятором GCC
+FROM gcc:latest
+
+# Встановлюємо необхідні пакети
+RUN apt-get update && apt-get install -y libpam0g-dev
+
+# Копіюємо вихідний код у контейнер
+COPY auth_greeting.c /usr/src/myapp/auth_greeting.c
+
+# Переходимо до робочої директорії
+WORKDIR /usr/src/myapp
+
+# Компілюємо програму
+RUN gcc -o auth_greeting auth_greeting.c -lcrypt
+
+# Вказуємо команду за замовчуванням
+CMD ["./auth_greeting"]

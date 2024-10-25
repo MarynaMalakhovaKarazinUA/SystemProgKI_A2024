@@ -1,0 +1,14 @@
+# Використовуємо базовий образ з компілятором GCC
+FROM gcc:latest
+
+# Копіюємо вихідний код у контейнер
+COPY jump_example.c /usr/src/myapp/jump_example.c
+
+# Переходимо до робочої директорії
+WORKDIR /usr/src/myapp
+
+# Компілюємо програму
+RUN gcc -o jump_example jump_example.c
+
+# Вказуємо команду за замовчуванням
+CMD ["./jump_example"]

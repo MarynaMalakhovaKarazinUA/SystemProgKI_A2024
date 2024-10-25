@@ -1,0 +1,20 @@
+# Використовуємо базовий образ Ubuntu
+FROM ubuntu:latest
+
+# Оновлюємо пакети та встановлюємо необхідні інструменти
+RUN apt-get update && apt-get install -y \
+    gcc \
+    make \
+    libc6-dev
+
+# Створюємо робочу директорію
+WORKDIR /app
+
+# Копіюємо файли програми в контейнер
+COPY . /app
+
+# Компілюємо програму
+RUN gcc -o backup_daemon backup_daemon.c
+
+# Вказуємо команду для запуску програми
+CMD ["./backup_daemon"]

@@ -1,0 +1,14 @@
+# Використовуємо базовий образ з компілятором GCC
+FROM gcc:latest
+
+# Копіюємо вихідний код у контейнер
+COPY settings_manager.c /usr/src/myapp/settings_manager.c
+
+# Переходимо до робочої директорії
+WORKDIR /usr/src/myapp
+
+# Компілюємо програму
+RUN gcc -o settings_manager settings_manager.c
+
+# Вказуємо команду за замовчуванням
+CMD ["./settings_manager"]
