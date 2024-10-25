@@ -1,0 +1,14 @@
+# Використовуємо базовий образ з компілятором gcc
+FROM gcc:latest
+
+# Створюємо робочу директорію
+WORKDIR /app
+
+# Копіюємо вихідний код до контейнера
+COPY settings_manager.c /app/settings_manager.c
+
+# Компілюємо програму
+RUN gcc -o settings_manager settings_manager.c
+
+# Налаштовуємо ENTRYPOINT для передачі аргументів програмі
+ENTRYPOINT ["./settings_manager"]
