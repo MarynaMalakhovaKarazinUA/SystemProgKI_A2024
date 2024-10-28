@@ -1,0 +1,6 @@
+FROM gcc:latest
+RUN apt-get update && apt-get install -y valgrind
+WORKDIR /app
+COPY mem_test.c .
+RUN gcc -o mem_test mem_test.c
+CMD ["./mem_test"]
