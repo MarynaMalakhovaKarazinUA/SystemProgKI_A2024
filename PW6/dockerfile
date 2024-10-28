@@ -1,0 +1,14 @@
+# Use the official GCC image
+FROM gcc:latest
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the C source code into the container
+COPY main.c .
+
+# Compile the C code
+RUN gcc -o my_program main.c
+
+# Command to run the compiled program
+CMD ["./my_program"]
