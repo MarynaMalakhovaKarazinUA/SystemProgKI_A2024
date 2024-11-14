@@ -1,0 +1,28 @@
+# Use the latest Ubuntu image
+FROM ubuntu:latest
+
+# Install necessary packages
+RUN apt-get update && \
+    apt-get install -y build-essential libcrypt-dev && \
+    rm -rf /var/lib/apt/lists/*
+
+# Create a test user with password 'testpassword'
+RUN useradd -m testuser
+
+# Set password for testuser
+RUN echo 'testuser:testpassword' | chpasswd
+
+# Copy the C program into the container
+COPY authenticate.c /usr/src/authenticate.c
+
+# Compile the C program
+RUN gcc -o /usr/local/bin/authenticate /usr/src/authenticate.c -lcrypt
+
+# Grant execution permissions
+RUN chmod +x /usr/local/bin/authenticate
+
+# Set the working directory
+WORKDIR /usr/local/bin
+
+# Run the program when the container starts
+CMD ["./authenticate"]
