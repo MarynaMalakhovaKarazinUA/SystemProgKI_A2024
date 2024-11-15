@@ -1,0 +1,26 @@
+# Вибір базового образу з підтримкою C
+FROM gcc:latest
+
+# Встановлення необхідних локалей та часових поясів
+RUN apt-get update && \
+    apt-get install -y locales tzdata && \
+    # Генерація основних локалей
+    echo "uk_UA.UTF-8 UTF-8" >> /etc/locale.gen && \
+    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
+    echo "cs_CZ.UTF-8 UTF-8" >> /etc/locale.gen && \
+    locale-gen && \
+    # Налаштування часових поясів
+    ln -fs /usr/share/zoneinfo/Europe/Prague /etc/localtime && \
+    dpkg-reconfigure -f noninteractive tzdata
+
+# Встановлення робочої директорії
+WORKDIR /usr/src/app
+
+# Копіювання вихідного коду в контейнер
+COPY . .
+
+# Компіляція програми
+RUN gcc -o birth_program birth_program.c
+
+# Команда за замовчуванням
+CMD ["./birth_program"]

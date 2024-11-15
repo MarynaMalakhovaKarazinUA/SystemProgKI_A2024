@@ -1,0 +1,20 @@
+# Використання базового образу
+FROM gcc:latest
+
+# Копіювання вихідного коду у контейнер
+COPY . /app
+WORKDIR /app
+
+# Компиляція програм
+RUN gcc -o fork_demo fork_demo.c
+RUN gcc -o fd_inheritance fd_inheritance.c
+RUN gcc -o exit_handlers exit_handlers.c
+RUN gcc -o backup_daemon backup_daemon.c
+
+# Запуск bash для тестування
+CMD ["/bin/bash"]
+
+#docker run --rm -it -v "$(pwd)/backup_test:/app/backup_test" demo_programs
+#для останної програми echo "Hello, World!" > /app/backup_test/watch/test_file.txt
+#cd /app/backup_test/backup
+#ls -l
