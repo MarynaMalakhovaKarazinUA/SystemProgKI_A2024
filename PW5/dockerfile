@@ -1,0 +1,22 @@
+# Використовуємо офіційний образ GCC
+FROM gcc:latest
+
+# Створюємо робочу директорію
+WORKDIR /app
+
+# Копіюємо вихідний файл до контейнера
+COPY manage_user_settings.c .
+
+# Компілюємо програму
+RUN gcc -o manage_user_settings manage_user_settings.c
+
+# Встановлюємо програму як точку входу
+ENTRYPOINT ["./manage_user_settings"]
+
+# docker build -t settings-manager .
+# docker run --rm settings-manager -s MYVAR=HelloDocker
+# docker run --rm -e MYVAR=HelloDocker settings-manager -g MYVAR
+# docker run --rm settings-manager -p
+# docker run --rm settings-manager -u
+# docker run --rm settings-manager -a
+# docker run --rm -it settings-manager /bin/bash
