@@ -1,0 +1,20 @@
+FROM ubuntu:20.04
+
+# Install necessary packages
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    linux-headers-$(uname -r) \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy the module source code and Makefile
+COPY my_module.c /usr/src/my_module/
+COPY Makefile /usr/src/my_module/
+
+# Set the working directory
+WORKDIR /usr/src/my_module
+
+# Build the module
+RUN make
+
+# Command to run when the container starts
+CMD ["/bin/bash"]

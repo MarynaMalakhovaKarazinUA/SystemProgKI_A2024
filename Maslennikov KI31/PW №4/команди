@@ -1,0 +1,76 @@
+Щоб запустити препроцесор і отримати розширений вихідний код, скористайтеся командою:
+
+gcc -E preprocessor_example.c -o preprocessor_output.c
+
+Файл preprocessor_output.c міститиме результат розгортання макросів і директив.
+
+
+Компіляція в об'єктний файл:
+
+gcc -c example.c -o example.o
+
+Створиться об'єктний файл example.o.
+
+Отримання асемблерного коду:
+
+gcc -S example.c -o example.s
+
+У файлі example.s буде збережено асемблерний код для example.c.
+
+Компіляція окремих файлів:
+
+
+gcc -c lib.c -o lib.o
+
+gcc -c main.c -o main.o
+
+Лінкування в єдиний виконуваний файл:
+
+gcc main.o lib.o -o program
+
+Запуск програми:
+
+./program
+
+
+Без оптимізації:
+
+gcc optimization_example.c -o optimization_example_O0
+
+Оптимізація рівня -O1:
+
+gcc -O1 optimization_example.c -o optimization_example_O1
+
+Оптимізація рівня -O2:
+
+gcc -O2 optimization_example.c -o optimization_example_O2
+
+Оптимізація рівня -O3:
+
+gcc -O3 optimization_example.c -o optimization_example_O3
+
+
+
+Для аналізу продуктивності використаємо gprof
+
+Скомпілюємо код з профайлером:
+
+gcc -pg optimization_example.c -o optimization_example
+
+Запустимо програму:
+
+./optimization_example
+
+Виконаємо профайлінг і збережемо результати:
+
+gprof optimization_example gmon.out > analysis.txt
+
+
+
+Збірка Docker образу:
+
+docker build -t c_build_example .
+
+Запуск контейнера:
+
+docker run --rm c_build_example
