@@ -1,0 +1,66 @@
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <pwd.h>
+#include <shadow.h>
+#include <crypt.h>
+#include <errno.h>
+
+int authenticate(const char *username, const char *password) {
+    struct passwd *pw;
+    struct spwd *spw;
+    char *encrypted_password;
+
+    // Отримання інформації про користувача
+    pw = getpwnam(username);
+    if (!pw) {
+        printf("User '%s' does not exist.\n", username);
+        return 0;
+    }
+
+    // Отримання захищеної інформації про користувача
+    spw = getspnam(username);
+    if (!spw) {
+        printf("Failed to retrieve shadow entry for '%s'.\n", username);
+        return 0;
+    }
+
+    // Хешування введеного пароля
+    encrypted_password = crypt(password, spw->sp_pwdp);
+    if (!encrypted_password) {
+        perror("crypt");
+        return 0;
+    }
+
+    // Перевірка пароля
+    if (strcmp(encrypted_password, spw->sp_pwdp) == 0) {
+        return 1; // Успішна аутентифікація
+    } else {
+        return 0; // Невдалий пароль
+    }
+}
+
+int main() {
+    char username[256];
+    char *password;
+
+    printf("Enter username: ");
+    if (scanf("%255s", username) != 1) {
+        fprintf(stderr, "Failed to read username.\n");
+        return 1;
+    }
+
+    // Введення пароля
+    password = getpass("Enter password: ");
+
+    // Аутентифікація
+    if (authenticate(username, password)) {
+        printf("Welcome, %s!\n", username);
+    } else {
+        printf("Authentication failed.\n");
+    }
+
+    return 0;
+}
