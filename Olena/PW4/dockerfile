@@ -1,0 +1,27 @@
+# Використовуємо конкретну версію Ubuntu для стабільності
+FROM ubuntu:latest
+
+# Уникнення інтерактивних запитів
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Оновлюємо пакети та встановлюємо необхідні утиліти
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        gcc \
+        build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Встановлюємо робочу директорію
+WORKDIR /app
+
+# Копіюємо вихідні файли в контейнер
+COPY file.c /app
+
+# Компіляція програми
+RUN gcc -o user_settings file.c
+
+# Встановлюємо права на виконання для файлу
+RUN chmod +x /app/user_settings
+
+# Вказуємо команду за замовчуванням
+CMD ["/bin/bash"]
