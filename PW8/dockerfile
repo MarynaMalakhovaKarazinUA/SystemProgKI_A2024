@@ -1,0 +1,23 @@
+# Використовуємо стандартний образ Ubuntu
+FROM ubuntu:20.04
+
+# Встановлюємо необхідні інструменти для компіляції
+RUN apt-get update && apt-get install -y \
+    gcc \
+    make \
+    libc6-dev
+
+# Створюємо директорію для програми
+WORKDIR /app
+
+# Копіюємо програму в контейнер
+COPY . /app
+
+# Компілюємо програму
+RUN gcc -o memory_test memory_test.c -lm
+
+# Запускаємо програму
+CMD ["./memory_test"]
+
+# docker build -t memory_test .
+# docker run --rm memory_test

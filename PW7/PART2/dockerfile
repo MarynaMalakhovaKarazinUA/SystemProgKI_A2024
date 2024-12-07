@@ -1,0 +1,17 @@
+FROM ubuntu:20.04
+
+RUN apt-get update && apt-get install -y \
+    gcc \
+    make \
+    && apt-get clean
+
+WORKDIR /app
+
+COPY task2.c .
+
+RUN gcc -o task2 task2.c
+
+CMD ["./task2"]
+
+# docker build -t task2 .
+# docker run --rm task2

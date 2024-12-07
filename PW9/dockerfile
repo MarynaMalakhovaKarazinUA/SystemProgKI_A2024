@@ -1,0 +1,30 @@
+# Використовуємо базовий образ Ubuntu
+FROM ubuntu:20.04
+
+# Оновлення та встановлення необхідних пакетів
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libcrypt-dev \
+    man-db \
+    sudo \
+    && rm -rf /var/lib/apt/lists/*
+
+# Створюємо користувача та встановлюємо пароль
+RUN useradd -ms /bin/bash myuser \
+    && echo "myuser:mysecurepassword" | chpasswd \
+    && usermod -aG sudo myuser
+
+# Копіюємо програму на C у контейнер
+COPY auth.c /usr/src/auth.c
+
+# Переходимо до директорії з вихідним кодом
+WORKDIR /usr/src
+
+# Компілюємо програму
+RUN gcc -o auth auth.c -lcrypt
+
+# Встановлюємо команду за замовчуванням для запуску програми
+CMD ["./auth"]
+
+# docker build -t auth-app .
+# docker run --rm -it auth-app
