@@ -1,0 +1,21 @@
+# Використовуємо базовий образ Ubuntu
+FROM ubuntu:20.04
+
+# Встановлюємо необхідні інструменти для створення .deb пакета
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    dpkg-dev \
+    fakeroot \
+    && apt-get clean
+
+# Копіюємо структуру пакета у контейнер
+COPY my-package /build/my-package
+
+# Встановлюємо робочу директорію
+WORKDIR /build
+
+# Створюємо .deb файл
+RUN dpkg-deb --build my-package
+
+# Результуючий .deb файл буде доступний у контейнері
+CMD ["ls", "-l", "/build/my-package.deb"]
