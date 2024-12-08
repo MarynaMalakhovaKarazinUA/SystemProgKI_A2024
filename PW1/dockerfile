@@ -4,10 +4,6 @@ FROM ubuntu:latest
 # Оновлюємо пакети та встановлюємо gcc
 RUN apt-get update && apt-get install -y gcc git
 
-#RUN git config --global user.name "Ivan Potapenko" && \
-#    git config --global user.email "ivan.potapenko@student.karazin.ua"
-
-
 # Встановлюємо Python 3.6 і необхідні утиліти
 RUN apt-get update && apt-get install -y \
     software-properties-common && \
@@ -19,7 +15,7 @@ RUN apt-get update && apt-get install -y \
 RUN apt-get install -y gdb
 
 # Копіюємо ваш код у контейнер
-#COPY hello.c /app/hello.c
+COPY hello.c /app/hello.c
 
 COPY hello.py /app/hello.py
 
@@ -33,9 +29,12 @@ RUN chmod +x /app/hello.py
 WORKDIR /app
 
 # Компілюємо програму з використанням опцій, які ви надали
-#RUN gcc -Wall -Wextra -O2 -g -fsanitize=address -o hello hello.c
+RUN gcc -Wall -Wextra -O2 -g -fsanitize=address -o hello hello.c
 
 RUN git config --list
 
 # Вказуємо, що контейнер має виконувати програму
-CMD ["/bin/bash"]
+CMD ["/app/drawing.sh"]
+
+#docker build -t con123 . 
+#docker run --rm -it -v .:/app con123

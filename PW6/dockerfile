@@ -1,0 +1,18 @@
+# Use the official GCC image
+FROM gcc:latest
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the C source code into the container
+COPY quantum_jump.c .
+
+# Compile the C code
+RUN gcc -o quantum_jump quantum_jump.c
+
+# Command to run the compiled program
+CMD ["./quantum_jump"]
+
+# docker build -t quantum_jump_image .
+# docker run --rm quantum_jump_image
+

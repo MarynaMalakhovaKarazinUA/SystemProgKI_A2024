@@ -1,0 +1,22 @@
+FROM ubuntu:20.04
+
+# Встановлюємо необхідні пакети
+RUN apt-get update --fix-missing && apt-get install -y \
+    build-essential \
+    inotify-tools \
+    libinotify-dev \
+    libc6-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Копіюємо код програми в контейнер
+COPY task4.c /app/task4.c
+
+# Компілюємо програму
+WORKDIR /app
+RUN gcc -o task4 task4.c -l inotify
+
+# Команда для запуску програми
+CMD ["./task4"]
+
+# docker build -t task4 .
+# docker run --rm task4

@@ -1,0 +1,33 @@
+# Використовуємо базовий образ Ubuntu для нашого контейнера
+FROM ubuntu:latest
+
+# Оновлюємо репозиторії та встановлюємо необхідні пакети
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    locales \
+    gcc \
+    make \
+    libc6-dev \
+    time
+
+# Встановлюємо локалі
+RUN locale-gen en_US.UTF-8
+RUN update-locale LANG=en_US.UTF-8
+
+# Створюємо робочу директорію в контейнері
+WORKDIR /app
+
+# Копіюємо файл з кодом в контейнер
+COPY ./birth_date.c /app/birth_date.c
+
+# Компільовуємо програму
+RUN gcc -o birth_date birth_date.c
+
+# Налаштовуємо локаль за замовчуванням
+ENV LANG en_US.UTF-8
+
+# Встановлюємо команду для запуску програми
+CMD ["./birth_date"]
+
+# docker build -t birth_date .
+# docker run --rm -it birth_date

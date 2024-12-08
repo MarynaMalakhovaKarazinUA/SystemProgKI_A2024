@@ -1,15 +1,26 @@
 #!/bin/bash
-echo "    *"
-echo "   ***"
-echo "  *****"
-echo " *******"
-echo "*********"
 
-RED='\033[0;31m'
+colors=('\033[0;31m' '\033[0;32m' '\033[0;33m' '\033[0;34m' '\033[0;35m' '\033[0;36m')
 NC='\033[0m'
 
-for i in {1..10}; do
-  echo -e "${RED}-----${NC}"
+echo -e "${colors[0]}      *${NC}"
+echo -e "${colors[1]}     ***${NC}"
+echo -e "${colors[2]}    *****${NC}"
+echo -e "${colors[3]}   *******${NC}"
+echo -e "${colors[4]}  *********${NC}"
+echo -e "${colors[5]} ***********${NC}"
+echo "*************"
+echo -e "${colors[5]} ***********${NC}"
+echo -e "${colors[4]}  *********${NC}"
+echo -e "${colors[3]}   *******${NC}"
+echo -e "${colors[2]}    *****${NC}"
+echo -e "${colors[1]}     ***${NC}"
+echo -e "${colors[0]}      *${NC}"
+
+colors=('\033[1;31m' '\033[1;32m' '\033[1;33m' '\033[1;34m' '\033[1;35m' '\033[1;36m' '\033[1;37m')
+
+for i in {1..7}; do
+  echo -e "${colors[i-1]}-------------${NC}"
 done
 
 for ((count=0; count<20; count++)); do
@@ -19,34 +30,15 @@ for ((count=0; count<20; count++)); do
   done
 done
 
-end=$((SECONDS+10))
-while [ $SECONDS -lt $end ]; do
+for ((i=5; i>=0; i--)); do
   clear
-  date +"%T"
+  echo "Зворотний відлік: $i"
   sleep 1
 done
 
-for i in {1..100}; do
-  sleep 0.1
+for i in {1..500}; do
+  sleep 0.001
   printf "\r[%-${i}s]" "$(printf "%${i}s" | tr ' ' '#')"
-done
-echo
-
-text="Танцюючий текст!"
-for ((count=0; count<20; count++)); do
-  for i in {1..40}; do
-    printf "\r%${i}s%s" "" "$text"
-    sleep 0.1
-  done
-done
-
-text="Радіо-передача!"
-colors=(31 32 33 34 35 36 37)
-for ((count=0; count<10; count++)); do
-  for color in "${colors[@]}"; do
-    printf "\033[0;${color}m%s\033[0m\r" "$text"
-    sleep 0.5
-  done
 done
 
 cols=$(tput cols)
@@ -59,5 +51,6 @@ while [ $SECONDS -lt $end ]; do
     y=$((RANDOM % rows))
     printf "\033[%d;%dH*\033[0m" "$y" "$x"
   done
-  sleep 0.1
+  sleep 0.0000001
 done
+clear

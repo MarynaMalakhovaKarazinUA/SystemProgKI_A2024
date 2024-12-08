@@ -1,0 +1,33 @@
+# Використаємо базовий образ Ubuntu
+FROM ubuntu:latest
+
+# Оновлюємо пакети та встановлюємо GCC, GDB, Git
+RUN apt-get update && apt-get install -y \
+    gcc gdb git software-properties-common
+
+# Встановлюємо Python 3.6 і pip
+RUN add-apt-repository ppa:deadsnakes/ppa && \
+    apt-get update && \
+    apt-get install -y python3.6 python3-pip
+
+# Копіюємо файли у контейнер
+COPY check_dir.c /app/check_dir.c
+COPY script.sh /app/script.sh
+
+# Встановлюємо права виконання для скрипта
+RUN chmod +x /app/script.sh
+
+# Встановлюємо робочу директорію
+WORKDIR /app
+
+# Компілюємо програму з використанням опцій
+RUN gcc -Wall -Wextra -O2 -g -o check_dir check_dir.c
+
+# Налаштовуємо Git (тут для демонстрації)
+RUN git config --list || echo "Git not configured"
+
+# Вказуємо виконання скрипта при запуску контейнера
+CMD ["/app/script.sh"]
+
+#docker build -t check-dir-container .
+#docker run --rm check-dir-container
