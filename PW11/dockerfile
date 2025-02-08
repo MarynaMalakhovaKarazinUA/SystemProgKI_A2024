@@ -1,0 +1,18 @@
+FROM ubuntu:latest
+
+# Встановлюємо необхідні інструменти
+RUN apt-get update && apt-get install -y dpkg-dev
+
+# Копіюємо структуру каталогу
+COPY . /workspace
+
+# Виправляємо дозволи
+RUN chmod -R 0755 /workspace/DEBIAN && \
+    chmod 0644 /workspace/DEBIAN/control
+
+# Створюємо DEB-пакет
+RUN dpkg-deb --build /workspace /workspace.deb && \
+    cp /workspace.deb /workspace/
+
+# Встановлюємо робочу директорію
+WORKDIR /workspace

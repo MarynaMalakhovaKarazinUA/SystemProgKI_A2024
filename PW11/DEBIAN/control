@@ -1,0 +1,12 @@
+Package: my-package
+Version: 1.0
+Section: base
+Priority: optional
+Architecture: amd64
+Essential: no
+Maintainer: Ivan Potapenko <ivan.potapenko@student.karazin.ua>
+Description: A short description of your package
+ This is a longer description of your package. It can span multiple lines,
+ and should provide a detailed explanation of the purpose and functionality
+ of your package.
+Depends: bash, coreutils
