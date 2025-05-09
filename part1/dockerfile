@@ -1,0 +1,17 @@
+# Використовуємо останню версію Ubuntu
+FROM ubuntu:latest
+
+# Оновлюємо систему та встановлюємо необхідні інструменти
+RUN apt-get update && apt-get install -y \
+    gcc \
+    binutils \
+    linux-tools-common linux-tools-generic \
+    make \
+    valgrind \
+    && apt-get clean
+
+# Встановлюємо робочу директорію
+WORKDIR /app
+
+# Додаємо повідомлення за замовчуванням
+CMD ["bash", "-c", "echo 'Mount your source code as a volume and compile/run your programs with profiling tools.'"]

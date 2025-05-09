@@ -1,0 +1,7 @@
+Package: my-package
+Version: 1.0
+Section: utils
+Priority: optional
+Architecture: amd64
+Maintainer: Kate Kovylkina <kateryna.kovylkina@student.karazin.ua>
+Description: This is a sample package built with Docker for Jsort
